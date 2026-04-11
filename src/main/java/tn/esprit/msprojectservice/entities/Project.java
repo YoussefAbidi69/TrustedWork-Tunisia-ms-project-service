@@ -51,6 +51,12 @@ public class Project {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Deliverable> deliverables;
 
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ProgressReport> progressReports;
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<DeliveryRiskSignal> riskSignals;
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
