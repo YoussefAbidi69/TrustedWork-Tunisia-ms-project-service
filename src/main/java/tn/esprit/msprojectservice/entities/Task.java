@@ -49,6 +49,10 @@ public class Task {
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<SubTask> subTasks;
 
+
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Deliverable> deliverables;
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
