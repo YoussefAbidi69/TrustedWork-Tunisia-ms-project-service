@@ -2,18 +2,16 @@ package tn.esprit.msprojectservice.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import tn.esprit.msprojectservice.entities.ProjectStatus;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Project {
+public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,37 +23,34 @@ public class Project {
     private String description;
 
     @Enumerated(EnumType.STRING)
-    private ProjectStatus status;
+    private TaskStatus status;
 
-    private Long contractId;
+    @Enumerated(EnumType.STRING)
+    private TaskPriority priority;
 
-    private Long clientId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id")
+    private Project project;
 
-    private Long freelancerId;
+    private Long assigneeId;
 
-    private LocalDate startDate;
+    private LocalDate deadline;
 
-    private LocalDate endDate;
+    private Integer estimatedHours;
 
-    private int completionRate;
-
-    private Double budget;
+    private Integer actualHours;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
-
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Task> tasks;
 
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
         if (this.status == null) {
-            this.status = ProjectStatus.ACTIVE;
+            this.status = TaskStatus.TODO;
         }
-        this.completionRate = 0;
     }
 
     @PreUpdate
